@@ -1,7 +1,7 @@
 
 code .hll { background-color: #ffffcc }
 code .c { color: #408080; font-style: italic } /* Comment */
-code .err { border: 1px solid #FF0000 } /* Error */
+/*code .err { border: 1px solid #FF0000 } [> Error <]*/
 code .k { color: #008000; font-weight: bold } /* Keyword */
 code .o { color: #666666 } /* Operator */
 code .cm { color: #408080; font-style: italic } /* Comment.Multiline */

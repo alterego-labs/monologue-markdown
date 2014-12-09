@@ -1,3 +1,5 @@
+require 'monologue-markdown/content_filter'
+
 Monologue::Post.class_eval do
   before_validation do
     if self.new_record?
@@ -10,11 +12,11 @@ Monologue::Post.class_eval do
   end
 
   def content
-    if self.is_markdown? && !in_admin?(caller)
-      pipeline = Content::Pipeline.new
-      return pipeline.filter(read_attribute(:content), markdown: { type: :gfm, safe: false })
+    if use_markdown?
+      MonologueMarkdown::ContentFilter.new(raw_content).run
+    else
+      raw_content
     end
-    read_attribute(:content)
   end
 
   def in_admin? caller
@@ -22,5 +24,15 @@ Monologue::Post.class_eval do
       return true if c.include? "app/controllers/monologue/admin/posts_controller.rb"
     end
     return false
+  end
+
+  private
+
+  def use_markdown?
+    self.is_markdown? && !in_admin?(caller)
+  end
+
+  def raw_content
+    read_attribute :content
   end
 end
